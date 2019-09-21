@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class routingConfig implements WebMvcConfigurer {
+public class RoutingConfig implements WebMvcConfigurer {
 
 
     public void addViewControllers(ViewControllerRegistry registry) {

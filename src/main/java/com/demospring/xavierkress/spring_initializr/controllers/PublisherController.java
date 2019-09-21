@@ -1,30 +1,24 @@
 package com.demospring.xavierkress.spring_initializr.controllers;
 
-import com.demospring.xavierkress.spring_initializr.repositories.BookRepository;
+import com.demospring.xavierkress.spring_initializr.repositories.PublisherRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class BookController {
+public class PublisherController {
 
-    private BookRepository bookRepository;
+    private PublisherRepository publisherRepository;
 
-    public BookController(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public PublisherController(PublisherRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
     }
 
-    @RequestMapping("/books")
-    public String getBooks(Model model){
-        model.addAttribute("books", bookRepository.findAll());
-
-        return "books";
-    }
-
-    @Override
-    public String toString() {
-        return "BookController{" +
-                "bookRepository=" + bookRepository +
-                '}';
+    @GetMapping("/publisher")
+    public ResponseEntity getPublishers(Model model){
+        model.addAttribute("books", publisherRepository.findAll());
+        return new ResponseEntity(publisherRepository.findAll(), HttpStatus.OK);
     }
 }
