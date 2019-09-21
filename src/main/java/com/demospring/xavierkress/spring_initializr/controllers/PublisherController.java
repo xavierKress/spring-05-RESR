@@ -1,11 +1,10 @@
 package com.demospring.xavierkress.spring_initializr.controllers;
 
+import com.demospring.xavierkress.spring_initializr.repositories.BookRepository;
 import com.demospring.xavierkress.spring_initializr.repositories.PublisherRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class PublisherController {
@@ -16,9 +15,10 @@ public class PublisherController {
         this.publisherRepository = publisherRepository;
     }
 
-    @GetMapping("/publisher")
-    public ResponseEntity getPublishers(Model model){
-        model.addAttribute("books", publisherRepository.findAll());
-        return new ResponseEntity(publisherRepository.findAll(), HttpStatus.OK);
+    @RequestMapping("/publisher")
+    public String getBooks(Model model){
+        model.addAttribute("publishers", publisherRepository.findAll());
+
+        return "publisher";
     }
 }
