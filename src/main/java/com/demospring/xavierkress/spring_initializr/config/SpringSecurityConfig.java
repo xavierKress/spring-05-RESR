@@ -9,16 +9,26 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/securedAdminPage").hasRole("ADMIN")
+                .antMatchers("/api/publishers").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -47,5 +57,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         .build();
 
         return new InMemoryUserDetailsManager(user, admin);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
