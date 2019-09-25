@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/publishers")
 public class PublisherRestController {
@@ -30,6 +32,23 @@ public class PublisherRestController {
     public Publisher setPublisher(@RequestBody Publisher newPublisher) {
         System.out.println(newPublisher);
         return publisherRepository.save(newPublisher);
+    }
+
+    @DeleteMapping("/{id}")
+    void deletePublisher(@PathVariable Long id) {
+        publisherRepository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    Publisher replacePublisher(@RequestBody Publisher newPublisher, @PathVariable Long id) {
+
+        Optional<Publisher> publisher = publisherRepository.findById(id);
+        if(publisher.isPresent()) {
+            Publisher p = publisher.get();
+            p.setName(newPublisher.getName());
+            return publisherRepository.save(p);
+        }
+        return null;
     }
 
 }
