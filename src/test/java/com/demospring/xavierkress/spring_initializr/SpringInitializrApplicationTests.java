@@ -13,4 +13,10 @@ public class SpringInitializrApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    void addition() {
+        //assertEquals(2, calculator.add(1, 1));
+    }
+
+
 }

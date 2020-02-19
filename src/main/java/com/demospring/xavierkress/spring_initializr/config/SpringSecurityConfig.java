@@ -19,16 +19,22 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
 
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-
-        http.authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/securedAdminPage").hasRole("ADMIN")
-                .antMatchers("/api/publishers").permitAll()
+                .antMatchers("/api/publishers/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
